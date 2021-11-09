@@ -1,61 +1,43 @@
-class Album:
-    # Constructor
-    def __init__(self, title, artist, price, genre):
-        self.title = title
-        self.artist = artist
-        self.price = price
-        self.genre = genre
+import sys
 
-    # Getters
-    def getTitle(self):
-        return self.title
-
-    def getArtist(self):
-        return self.artist
-
-    def getPrice(self):
-        return self.price
-
-    def getGenre(self):
-        return self.genre
-
-    # Setters
-    def setTitle(self, title):
-        self.title = title
-
-    def setArtist(self, artist):
-        self.artist = artist
-
-    def setPrice(self, price):
-        self.price = price
-
-    def setGenre(self, genre):
-        self.genre = genre
+from Models.Album import Album
+from Models.Review import Review
+import DBHandler as dbHandler
 
 
-class Review:
-    # Constructor
-    def __init__(self, title, description, score):
-        self.title = title
-        self.review = description
-        self.score = score
+# select all from table
+# dbHandler.select_all_from_table('album')
+# dbHandler.select_all_from_table('review')
 
-    # Getters
-    def getTitle(self):
-        return self.title
+# select by id
+# dbHandler.select_by_id('album', 1)
+# dbHandler.select_by_id('review', 1)
 
-    def getReview(self):
-        return self.review
+# insert into table
+# dbHandler.insert_into_table(Album('The Beatles', 'Abbey Road', 'Rock', '10.99'))
+# dbHandler.insert_into_table(Review('Worst Album Ever', 'Title says it all', 5, 3))
 
-    def getScore(self):
-        return self.score
+# menu for db Handler
+def menu():
+    while True:
+        table_response = input("Pick a table: ")
+        option_response = input("Pick an option: ")
+        if option_response == '1':
+            dbHandler.select_all_from_table(table_response)
+        elif option_response == '2':
+            dbHandler.select_by_id(table_response, input("Enter id"))
+        elif option_response == '3':
+            if table_response == 'album':
+                dbHandler.insert_into_table(
+                    Album(input("Enter artist"), input("Enter title"), input("Enter genre")))
+            elif table_response == 'review':
+                dbHandler.insert_into_table(
+                    Review(input("Enter title"), input("Enter review"), input("Enter rating"), input("Enter album_id")))
+        elif option_response == '4':
+            dbHandler.delete_by_id(table_response, input("Enter id"))
+        elif option_response == '5':
+            dbHandler.close_connection()
+            sys.exit()
 
-    # Setters
-    def setTitle(self, title):
-        self.title = title
 
-    def setReview(self, review):
-        self.review = review
-
-    def setScore(self, score):
-        self.score = score
+menu()
